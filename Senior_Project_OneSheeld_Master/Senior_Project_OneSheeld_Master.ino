@@ -28,8 +28,6 @@ const char nextCommand[] = "next";
 void setup() {
   OneSheeld.begin();
   Wire.begin(8); // join i2c bus (address optional for master)
-  VoiceRecognition.setOnError(error);
-  VoiceRecognition.start();
   
 }
 
@@ -40,6 +38,7 @@ byte LX = 127, LY = 127, RX = 127, RY = 127;
 String voiceCommand = "";
 
 //If a voice command not related to the music player is recongized, set voiceCommand to that command
+/*
 void sendVoice()
 {
   if(VoiceRecognition.isNewCommandReceived())
@@ -48,31 +47,32 @@ void sendVoice()
     {
       MusicPlayer.play();
     }
-    /* Compare the pause command. */
+    // Compare the pause command. 
     else if (!strcmp(pauseCommand,VoiceRecognition.getLastCommand()))
     {
-      /* Pause the track. */
+      // Pause the track. 
       MusicPlayer.pause();
     }
-    /* Compare the stop command. */
+    // Compare the stop command. 
     else if (!strcmp(stopCommand,VoiceRecognition.getLastCommand()))
     {
-      /* Stop the track. */
+      // Stop the track. 
       MusicPlayer.stop();
     }
-    /* Compare the next command. */
+    // Compare the next command. 
     else if (!strcmp(nextCommand,VoiceRecognition.getLastCommand()))
     {
-      /* Next track. */
+      // Next track. 
       MusicPlayer.next();
     }
     else if(!strcmp(startCommand,VoiceRecognition.getLastCommand()))
     {
-      /* Toggle the robot on or off. */
+      // Toggle the robot on or off. 
       voiceCommand = "Start";
     }
   }
 }
+*/
 
 //Used to create a pause in between button pressing for user-friendliness
 boolean buttonPressed = false;
@@ -182,7 +182,7 @@ void sendAccelerometer()
 void loop() {
   Terminal.println("Working");
   Wire.beginTransmission(8); // transmit to device #8
-  sendVoice();
+  //sendVoice();
   sendGamePad();
   sendAccelerometer();
   Wire.endTransmission();    // stop transmitting
