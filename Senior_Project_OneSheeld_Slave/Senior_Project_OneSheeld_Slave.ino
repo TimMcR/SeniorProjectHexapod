@@ -318,6 +318,17 @@ void recieveEvent(int howMany)
   RX = Wire.read();
   RY = Wire.read();
   g_InputController.ControlInput(command, LX, LY, RX, RY);
+  Serial.begin(9600);
+  Serial.print("LX: ");
+  Serial.println(LX);
+  Serial.print("LY: ");
+  Serial.println(LY);
+  Serial.print("RX: ");
+  Serial.println(RX);
+  Serial.print("RY: ");
+  Serial.println(RY);
+  Serial.print("Command: ");
+  Serial.println(command);
 }
 
 
@@ -1430,5 +1441,3 @@ short SmoothControl (short CtrlMoveInp, short CtrlMoveOut, byte CtrlDivider)
 
     return CtrlMoveInp;
 }
-
-

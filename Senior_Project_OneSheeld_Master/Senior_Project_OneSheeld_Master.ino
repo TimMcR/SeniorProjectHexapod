@@ -27,7 +27,7 @@ const char nextCommand[] = "next";
 
 void setup() {
   OneSheeld.begin();
-  Wire.begin(); // join i2c bus (address optional for master)
+  Wire.begin(8); // join i2c bus (address optional for master)
   VoiceRecognition.setOnError(error);
   VoiceRecognition.start();
   
@@ -125,6 +125,10 @@ void sendGamePad()
     Wire.write("");
     buttonPressed = false;
   }
+  if(buttonPressed)
+  {
+    Terminal.println("Button command sent");
+  }
 }
 
 //Sets the standard minimum movements of accelerometer so the robot is not constantly moving
@@ -170,11 +174,13 @@ void sendAccelerometer()
   Wire.write(LY); 
   Wire.write(RX);
   Wire.write(RY);
+  Terminal.println("Sending joystick values");
 }
 
-//Constantly sends data to the slave.
+//Constantly sends  to the slave.
 //If a button is pressed or a voice command is recognized, pause for longer than normal
 void loop() {
+  Terminal.println("Working");
   Wire.beginTransmission(8); // transmit to device #8
   sendVoice();
   sendGamePad();
