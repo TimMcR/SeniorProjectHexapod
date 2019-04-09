@@ -11,8 +11,8 @@
 #define CUSTOM_SETTINGS
 #define INCLUDE_ACCELEROMETER_SENSOR_SHIELD
 #define INCLUDE_GAMEPAD_SHIELD
-#define INCLUDE_VOICE_RECOGNIZER_SHIELD
-#define INCLUDE_MUSIC_PLAYER_SHIELD
+//#define INCLUDE_VOICE_RECOGNIZER_SHIELD
+//#define INCLUDE_MUSIC_PLAYER_SHIELD
 #define INCLUDE_TERMINAL_SHIELD
 #include <OneSheeld.h>
 
@@ -83,27 +83,34 @@ boolean buttonPressed = false;
 void sendGamePad()
 {
   buttonPressed = true;
+  /*
   if(voiceCommand.equals("Start"))
   {
     Wire.write("Start");
     voiceCommand = "";
   }
-  else if(GamePad.isBluePressed())
+  */
+  if(GamePad.isBluePressed())
   {
     Wire.write("Start");
+    Terminal.println("Start");
   }
   else if(GamePad.isRedPressed())
   {
     Wire.write("L1");
+    Terminal.println("L1");
   }
   else if(GamePad.isOrangePressed())
   {
     Wire.write("L2");
+    Terminal.println("L2");
   }
   else if(GamePad.isGreenPressed())
   {
     Wire.write("Select");
+    Terminal.println("Select");
   }
+  /*
   else if(GamePad.isLeftPressed())
   {
     Wire.write("");
@@ -120,14 +127,11 @@ void sendGamePad()
   {
     Wire.write("");
   }
+  */
   else
   {
     Wire.write("");
     buttonPressed = false;
-  }
-  if(buttonPressed)
-  {
-    Terminal.println("Button command sent");
   }
 }
 
@@ -180,27 +184,18 @@ void sendAccelerometer()
 //Constantly sends  to the slave.
 //If a button is pressed or a voice command is recognized, pause for longer than normal
 void loop() {
-  Terminal.println("Working");
   Wire.beginTransmission(8); // transmit to device #8
   //sendVoice();
   sendGamePad();
   sendAccelerometer();
   Wire.endTransmission();    // stop transmitting
-  if(buttonPressed)
-  {
-    delay(750);
-    buttonPressed = false;
-  }
-  else
-  {
-    delay(150);
-  }
 }
 
+/*
 //Error code for Voice Recognition shield, do not change
 void error(byte errorData)
 {
-  /* Switch on error and print it on the terminal. */
+  // Switch on error and print it on the terminal. 
   switch(errorData)
   {
     case NETWORK_TIMEOUT_ERROR: Terminal.println("Network timeout");break;
@@ -212,3 +207,4 @@ void error(byte errorData)
     case RECOGNIZER_BUSY_ERROR: Terminal.println("Busy");break;
   }
 }
+*/

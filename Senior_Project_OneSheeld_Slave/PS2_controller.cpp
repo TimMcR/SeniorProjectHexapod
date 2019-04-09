@@ -147,9 +147,20 @@ void InputController::AllowControllerInterrupts(boolean fAllow)
 //process any commands.
 //==============================================================================
 
+static String prevCommand = "";
 
 void InputController::ControlInput(String command, int LX, int LY, int RX, int RY)
 {
+  if(command.equals(prevCommand) && !command.equals(""))
+  {
+    digitalWrite(13, HIGH);
+    return;
+  }
+  else
+  {
+    digitalWrite(13, LOW);
+    prevCommand = command;
+  }
     // Then try to receive a packet of information from the PS2.
     // Then try to receive a packet of information from the PS2.
     //ps2x.read_gamepad();          //read controller and set large motor to spin at 'vibrate' speed
@@ -386,5 +397,3 @@ void PS2TurnRobotOff(void)
 
 
 #endif //USEPS2
-
-
