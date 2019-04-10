@@ -11,27 +11,39 @@
 #define CUSTOM_SETTINGS
 #define INCLUDE_ACCELEROMETER_SENSOR_SHIELD
 #define INCLUDE_GAMEPAD_SHIELD
-//#define INCLUDE_VOICE_RECOGNIZER_SHIELD
-//#define INCLUDE_MUSIC_PLAYER_SHIELD
+#define INCLUDE_VOICE_RECOGNIZER_SHIELD
+#define INCLUDE_MUSIC_PLAYER_SHIELD
 #define INCLUDE_TERMINAL_SHIELD
 #include <OneSheeld.h>
 
 #include <Wire.h>
 
 void setup() {
-  OneSheeld.begin();
   Wire.begin(); // join i2c bus (address optional for master)
   
+  OneSheeld.begin();
+
+  VoiceRecognition.setOnError(error);
+  VoiceRecognition.start();
 }
 
 //These are the "joystick" values we are sending to the slave Arduino, values range from 0-255
 byte LX = 127, LY = 127, RX = 127, RY = 127;
 
+// Voice commands set by the user.
+const char playCommand[] = "play";
+const char pauseCommand[] = "pause";
+const char stopCommand[] = "stop";
+const char nextCommand[] = "next";
+const char startCommand[] = "start";
+
+
 //Used to send a voice command during sendGamePad
 String voiceCommand = "";
 
 //If a voice command not related to the music player is recongized, set voiceCommand to that command
-/*
+
+
 void sendVoice()
 {
   if(VoiceRecognition.isNewCommandReceived())
@@ -65,22 +77,15 @@ void sendVoice()
     }
   }
 }
-*/
 
 //Sends the values from the GamePad shield as values from a PS2 controller
 //If a voiceCommand has been recognized, send that instead of a GamePad button
 //If a button is not being used, don't need to worry about checking the value or just send a blank String
 void sendGamePad()
-{
-  /*
-  if(voiceCommand.equals("Start"))
+{ 
+  if(GamePad.isBluePressed() || voiceCommand.equals("Start"))
   {
-    Wire.write("Start");
     voiceCommand = "";
-  }
-  */
-  if(GamePad.isBluePressed())
-  {
     Wire.write("Start");
     Terminal.println("Start");
   }
@@ -171,17 +176,20 @@ void sendAccelerometer()
 
 //Constantly sends  to the slave.
 //If a button is pressed or a voice command is recognized, pause for longer than normal
-void loop() {
-  
+void loop() 
+{
   Wire.beginTransmission(8); // transmit to device #8
+  sendVoice();
   sendGamePad();
   sendAccelerometer();
   Wire.endTransmission();    // stop transmitting
-  delay(125);
+  delay(10);
+  //Wire.endTransmission();
   //Terminal.println("Working");
 }
 
-/*
+
+
 //Error code for Voice Recognition shield, do not change
 void error(byte errorData)
 {
@@ -197,4 +205,3 @@ void error(byte errorData)
     case RECOGNIZER_BUSY_ERROR: Terminal.println("Busy");break;
   }
 }
-*/
