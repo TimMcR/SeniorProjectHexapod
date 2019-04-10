@@ -18,16 +18,9 @@
 
 #include <Wire.h>
 
-//Voice commands to be recognized by Voice Recognition shield
-const char startCommand[] = "start";
-const char playCommand[] = "play";
-const char pauseCommand[] = "pause";
-const char stopCommand[] = "stop";
-const char nextCommand[] = "next";
-
 void setup() {
   OneSheeld.begin();
-  Wire.begin(8); // join i2c bus (address optional for master)
+  Wire.begin(); // join i2c bus (address optional for master)
   
 }
 
@@ -74,15 +67,11 @@ void sendVoice()
 }
 */
 
-//Used to create a pause in between button pressing for user-friendliness
-boolean buttonPressed = false;
-
 //Sends the values from the GamePad shield as values from a PS2 controller
 //If a voiceCommand has been recognized, send that instead of a GamePad button
 //If a button is not being used, don't need to worry about checking the value or just send a blank String
 void sendGamePad()
 {
-  buttonPressed = true;
   /*
   if(voiceCommand.equals("Start"))
   {
@@ -131,7 +120,6 @@ void sendGamePad()
   else
   {
     Wire.write("");
-    buttonPressed = false;
   }
 }
 
@@ -184,11 +172,13 @@ void sendAccelerometer()
 //Constantly sends  to the slave.
 //If a button is pressed or a voice command is recognized, pause for longer than normal
 void loop() {
+  
   Wire.beginTransmission(8); // transmit to device #8
-  //sendVoice();
   sendGamePad();
   sendAccelerometer();
   Wire.endTransmission();    // stop transmitting
+  delay(125);
+  //Terminal.println("Working");
 }
 
 /*
