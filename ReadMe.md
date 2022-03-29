@@ -1,1 +1,1 @@
-# Arduino Bluetooth controlled Hexapod for my high school senior project
+# Bluetooth controlled Arduino Hexapod for my high school senior project
